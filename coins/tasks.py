@@ -1,8 +1,15 @@
+from asgiref.sync import async_to_sync
+
 from django.forms.models import model_to_dict
+
 from celery import shared_task
+from channels.layers import get_channel_layer
 import requests
 
 from .models import Coin
+
+
+channel_layer = get_channel_layer()
 
 
 @shared_task
@@ -39,3 +46,5 @@ def get_coins_data():
         new_data.update({'state': state})
 
         coins.append(new_data)
+
+    async_to_sync(channel_layer.group_send)('coins', {'type': 'send_new_data', 'text': coins})
