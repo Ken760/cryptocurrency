@@ -117,3 +117,4 @@ coins/migrations/
 celerybeat-schedule.bak
 celerybeat-schedule.dat
 celerybeat-schedule.dir
+node_modules
